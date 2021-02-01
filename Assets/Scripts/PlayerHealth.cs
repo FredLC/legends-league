@@ -1,17 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Assertions;
 
 public class PlayerHealth : MonoBehaviour
 {
   [SerializeField] int startingHealth = 100;
   [SerializeField] float timeSinceLastHit = 2f;
+  [SerializeField] Slider healthSlider;
 
   private float timer = 0f;
   private CharacterController characterController;
   private Animator animator;
   private int currentHealth;
   private AudioSource audio;
+
+  private void Awake()
+  {
+    Assert.IsNotNull(healthSlider);
+  }
 
   void Start()
   {
@@ -46,6 +54,7 @@ public class PlayerHealth : MonoBehaviour
       GameManager.instance.PlayerHit(currentHealth);
       animator.Play("Hurt");
       currentHealth -= 10;
+      healthSlider.value = currentHealth;
       audio.PlayOneShot(audio.clip);
     }
 
