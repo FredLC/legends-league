@@ -25,6 +25,7 @@ public class EnemyAttack : MonoBehaviour
 
   void Update()
   {
+    transform.LookAt(player.transform);
     if (Vector3.Distance(transform.position, player.transform.position) < range && enemyHealth.IsAlive)
     {
       playerInRange = true;

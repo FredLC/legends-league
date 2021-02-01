@@ -7,6 +7,8 @@ using UnityEngine.Assertions;
 public class EnemyMove : MonoBehaviour
 {
   [SerializeField] Transform player;
+  [SerializeField] private float minRange;
+
   private NavMeshAgent navMeshAgent;
   private Animator animator;
   private EnemyHealth enemyHealth;
@@ -25,6 +27,20 @@ public class EnemyMove : MonoBehaviour
 
   void Update()
   {
+    if (Vector3.Distance(transform.position, player.transform.position) > minRange)
+    {
+      animator.SetBool("isWalking", true);
+      navMeshAgent.SetDestination(player.position);
+    }
+    else
+    {
+      animator.SetBool("isWalking", false);
+      if (enemyHealth.IsAlive)
+      {
+        navMeshAgent.ResetPath();
+      }
+    }
+
     if (!GameManager.instance.GameOver && enemyHealth.IsAlive)
     {
       navMeshAgent.SetDestination(player.position);
