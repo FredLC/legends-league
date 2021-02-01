@@ -9,6 +9,7 @@ public class EnemyMove : MonoBehaviour
   [SerializeField] Transform player;
   private NavMeshAgent navMeshAgent;
   private Animator animator;
+  private EnemyHealth enemyHealth;
 
   private void Awake()
   {
@@ -19,13 +20,18 @@ public class EnemyMove : MonoBehaviour
   {
     animator = GetComponent<Animator>();
     navMeshAgent = GetComponent<NavMeshAgent>();
+    enemyHealth = GetComponent<EnemyHealth>();
   }
 
   void Update()
   {
-    if (!GameManager.instance.GameOver)
+    if (!GameManager.instance.GameOver && enemyHealth.IsAlive)
     {
       navMeshAgent.SetDestination(player.position);
+    }
+    else if ((!GameManager.instance.GameOver || GameManager.instance.GameOver) && !enemyHealth.IsAlive)
+    {
+      navMeshAgent.enabled = false;
     }
     else
     {

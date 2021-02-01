@@ -11,19 +11,21 @@ public class EnemyAttack : MonoBehaviour
   private GameObject player;
   private bool playerInRange;
   private BoxCollider[] weaponColliders;
+  private EnemyHealth enemyHealth;
 
   void Start()
   {
     weaponColliders = GetComponentsInChildren<BoxCollider>();
     player = GameManager.instance.Player;
     animator = GetComponent<Animator>();
+    enemyHealth = GetComponent<EnemyHealth>();
     StartCoroutine(Attack());
   }
 
 
   void Update()
   {
-    if (Vector3.Distance(transform.position, player.transform.position) < range)
+    if (Vector3.Distance(transform.position, player.transform.position) < range && enemyHealth.IsAlive)
     {
       playerInRange = true;
     }
