@@ -23,6 +23,14 @@ public class EnemyMove : MonoBehaviour
 
   void Update()
   {
-    navMeshAgent.SetDestination(player.position);
+    if (!GameManager.instance.GameOver)
+    {
+      navMeshAgent.SetDestination(player.position);
+    }
+    else
+    {
+      navMeshAgent.enabled = false;
+      animator.Play("Idle");
+    }
   }
 }

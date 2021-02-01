@@ -19,44 +19,50 @@ public class PlayerController : MonoBehaviour
 
   private void Update()
   {
-    Vector3 moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-    characterController.SimpleMove(moveDirection * moveSpeed);
+    if (!GameManager.instance.GameOver)
+    {
+      Vector3 moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+      characterController.SimpleMove(moveDirection * moveSpeed);
 
-    if (moveDirection == Vector3.zero)
-    {
-      animator.SetBool("isWalking", false);
-    }
-    else
-    {
-      animator.SetBool("isWalking", true);
-    }
+      if (moveDirection == Vector3.zero)
+      {
+        animator.SetBool("isWalking", false);
+      }
+      else
+      {
+        animator.SetBool("isWalking", true);
+      }
 
-    if (Input.GetMouseButtonDown(0))
-    {
-      animator.Play("DoubleChop");
-    }
+      if (Input.GetMouseButtonDown(0))
+      {
+        animator.Play("DoubleChop");
+      }
 
-    if (Input.GetMouseButtonDown(1))
-    {
-      animator.Play("SpinAttack");
+      if (Input.GetMouseButtonDown(1))
+      {
+        animator.Play("SpinAttack");
+      }
     }
   }
 
   private void FixedUpdate()
   {
-    RaycastHit hit;
-    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-    if (Physics.Raycast(ray, out hit, 500, layerMask, QueryTriggerInteraction.Ignore))
+    if (!GameManager.instance.GameOver)
     {
-      if (hit.point != currentLookTarget)
-      {
-        currentLookTarget = hit.point;
-      }
+      RaycastHit hit;
+      Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-      Vector3 targetPosition = new Vector3(hit.point.x, transform.position.y, hit.point.z);
-      Quaternion rotation = Quaternion.LookRotation(targetPosition - transform.position);
-      transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * 10f);
+      if (Physics.Raycast(ray, out hit, 500, layerMask, QueryTriggerInteraction.Ignore))
+      {
+        if (hit.point != currentLookTarget)
+        {
+          currentLookTarget = hit.point;
+        }
+
+        Vector3 targetPosition = new Vector3(hit.point.x, transform.position.y, hit.point.z);
+        Quaternion rotation = Quaternion.LookRotation(targetPosition - transform.position);
+        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * 10f);
+      }
     }
   }
 }
