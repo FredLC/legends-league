@@ -18,6 +18,7 @@ public class EnemyHealth : MonoBehaviour
   private CapsuleCollider capsuleCollider;
   private bool disappearEnemy = false;
   private int currentHealth;
+  private ParticleSystem blood;
 
   public bool IsAlive { get { return isAlive; } }
 
@@ -30,6 +31,7 @@ public class EnemyHealth : MonoBehaviour
     audio = GetComponent<AudioSource>();
     isAlive = true;
     currentHealth = startingHealth;
+    blood = GetComponentInChildren<ParticleSystem>();
   }
 
 
@@ -51,6 +53,7 @@ public class EnemyHealth : MonoBehaviour
       {
         takeHit();
         timeSinceLastHit = 0f;
+        blood.Play();
       }
     }
   }
