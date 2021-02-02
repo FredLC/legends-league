@@ -2,24 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Assertions;
 
 public class EnemyMove : MonoBehaviour
 {
-  [SerializeField] Transform player;
+  private Transform player;
   [SerializeField] private float minRange;
 
   private NavMeshAgent navMeshAgent;
   private Animator animator;
   private EnemyHealth enemyHealth;
 
-  private void Awake()
-  {
-    Assert.IsNotNull(player);
-  }
-
   void Start()
   {
+    player = GameManager.instance.Player.transform;
     animator = GetComponent<Animator>();
     navMeshAgent = GetComponent<NavMeshAgent>();
     enemyHealth = GetComponent<EnemyHealth>();
@@ -27,19 +22,19 @@ public class EnemyMove : MonoBehaviour
 
   void Update()
   {
-    if (Vector3.Distance(transform.position, player.transform.position) > minRange)
-    {
-      animator.SetBool("isWalking", true);
-      navMeshAgent.SetDestination(player.position);
-    }
-    else
-    {
-      animator.SetBool("isWalking", false);
-      if (enemyHealth.IsAlive)
-      {
-        navMeshAgent.ResetPath();
-      }
-    }
+    // if (Vector3.Distance(transform.position, player.transform.position) > minRange && enemyHealth.IsAlive)
+    // {
+    //   animator.SetBool("isWalking", true);
+    //   navMeshAgent.SetDestination(player.position);
+    // }
+    // else
+    // {
+    //   animator.SetBool("isWalking", false);
+    //   if (enemyHealth.IsAlive)
+    //   {
+    //     navMeshAgent.ResetPath();
+    //   }
+    // }
 
     if (!GameManager.instance.GameOver && enemyHealth.IsAlive)
     {
